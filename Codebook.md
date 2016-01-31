@@ -15,4 +15,5 @@ The R script run_analysis.R performs the 5 steps as decsribed in the course proj
 3. final_data merges x_data, y_data and subject_data.
 4. mean_std_features is a numeric vector which is used to extract the desired data and x_data dataset is corrected with the names contained in features.txt
 5. A similar approach is taken with activity names through the activities variable.
-6. Finally, tidydata.txt contains the relevant averages of each variable for each activity and each subject.
+6. Using cbind all_data dataset is created which contains the descriptive labels and desired data only.
+7. Finally, using the all_data dataset, tidydata.txt is created which contains the relevant averages of each variable for each activity and each subject.
