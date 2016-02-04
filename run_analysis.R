@@ -19,15 +19,19 @@ subject_train <- read.table(file.path(path_rf, "train", "subject_train.txt"), he
 
 ##1. Merging and creating one data set
 x_data <- rbind(x_train, x_test)
+features <- read.table("./data/UCI HAR Dataset/features.txt", header=FALSE, quote="\"")
+names(x_data) <- features$V2
 y_data <- rbind(y_train, y_test)
+names(y_data) <- c("Activity")
 subject_data <- rbind(subject_train, subject_test)
+names(subject_data) <- c("Subject")
 
 ##Merging columns to get the data frame
 combine <- cbind(subject_data, y_data)
 final_data <- cbind(x_data, combine)
 
 ##2. Extract only the measurements on the mean and std for each measurement
-features <- read.table(file.path(path_rf, "features.txt"), header=FALSE)
+subset_data <-final_data[,grepl("Subject|Activity|mean\\(\\)|std\\(\\)", names(final_data))]
 
 ##Get columns with only mean() or std() in their names
 mean_std_features <- grep("-(mean|std)\\(\\)", features[, 2])
@@ -41,16 +45,17 @@ activities <- read.table(file.path(path_rf, "activity_labels.txt"),header = FALS
 
 ##Update the values with correct activity name and then correct the column name
 y_data[,1] <- activities[y_data[,1],2]
-names(y_data) <- "activity"
 
 ##4. Appropriately labels the data set with descriptive variable names
-names(subject_data) <- "subject"
 names(x_data)<-gsub("^t", "time", names(x_data))
 names(x_data)<-gsub("^f", "frequency", names(x_data))
 names(x_data)<-gsub("Acc", "Accelerometer", names(x_data))
 names(x_data)<-gsub("Gyro", "Gyroscope", names(x_data))
 names(x_data)<-gsub("Mag", "Magnitude", names(x_data))
 names(x_data)<-gsub("BodyBody", "Body", names(x_data))
+names(x_data)<-gsub("-mean", "Mean", names(x_data))
+names(x_data)<-gsub("-std", "Std", names(x_data))
+names(x_data)<-gsub("\\()", "", names(x_data))
 
 ##Bind all data into one single data set
 all_data <-cbind(x_data, y_data, subject_data)
@@ -58,6 +63,5 @@ all_data <-cbind(x_data, y_data, subject_data)
 ##5. Create a second independent tidy dataset with average of each variable
 ##for each activity and each subject
 
-Data2<-aggregate(. ~V1 + activity, all_data, mean)
-Data2<-Data2[order(Data2$subject,Data2$activity),]
-write.table(Data2, file = "tidydata.txt",row.name=FALSE)
+averages_data <- ddply(all_data, .(Subject, activity), function(x) colMeans(x[, 1:66]))
+write.table(averages_data, "tidy_data.txt", row.name=FALSE)
