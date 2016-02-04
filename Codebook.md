@@ -91,12 +91,12 @@ fBodyBodyGyroJerkMagStd
 fBodyBodyGyroJerkMagMeanFreq
 
 #ACTIVITY LABELS
-WALKING (VALUE 1)
-WALKING_UPSTAIRS (VALUE 2)
-WALKING_DOWNSTAIRS (VALUE 3)
-SITTING(VALUE 4)
-STANDING (VALUE 5)
-LAYING(VALUE 6)
+1. WALKING (VALUE 1)
+2. WALKING_UPSTAIRS (VALUE 2)
+3. WALKING_DOWNSTAIRS (VALUE 3)
+4. SITTING(VALUE 4)
+5. STANDING (VALUE 5)
+6. LAYING(VALUE 6)
 
 #DATA SET INFORMATION
 1. x_train, y_train, x_test, y_test, subject_train and subject_test contain the data from the downloaded files.
@@ -115,3 +115,5 @@ The R script run_analysis.R performs the 5 steps as decsribed in the course proj
 3. The activity names are taken from activity_labels.txt and they are substituted in the dataset.
 4. Similarly, the columns with abbreviated names are corrected with descriptive labels.
 5. Finally, a new dataset is generated with all the average measures for each subject and activity type. The output file is called tidydata.txt, and uploaded to this repository.
+
+The new dataset contains all the average measures for each subject and activity type (30 subjects * 6 activities = 180 rows). 
